@@ -34,6 +34,13 @@
   </head>
 
   <body>
+    <div class="d-flex align-items-start position-relative" style="padding-top: 12px;">
+      <a href="/notifications" class="btn btn-link position-relative">
+        <i class="bi bi-envelope-fill"></i>
+        <span id="notification-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">•</span>
+      </a>
+    </div>
+
     <% if notice %>
       <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
         <i class="bi bi-check-circle-fill me-2"></i>
@@ -49,13 +56,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     <% end %>
-
-    <div class="d-flex align-items-start position-relative" style="padding-top: 12px;">
-      <a href="/notifications" class="btn btn-link position-relative">
-        <i class="bi bi-envelope-fill"></i>
-        <span id="notification-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">•</span>
-      </a>
-    </div>
 
     <%= yield %>
   </body>

@@ -54,7 +54,7 @@
       <%= render partial: "reports/teacher_report", locals: { reports: @teacher_reports } %>
     <% end %>
 
-    <% if current_user&.student? %>
+    <% if current_user&.student? && !@responses.empty? %>
       <div class="responses-table-container">
         <div>
           <table class="responses-table">

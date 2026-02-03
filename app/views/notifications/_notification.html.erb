@@ -6,7 +6,7 @@
     <span class="badge bg-<%= badge_class %> me-2"><%= type_label %></span>
     <strong><%= notification.params[:message] %></strong><br>
     <% if notification.params[:url].present? %>
-      <a href="<%= notification.params[:url] %>">Go to link</a>
+      <a href="<%= notification.params[:url] %>">See details</a>
     <% end %>
   </div>
   <div class="text-end">

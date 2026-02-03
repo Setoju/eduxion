@@ -41,9 +41,15 @@
           <%= check_box_tag "q[lessonable]", "1", params.dig(:q, :lessonable) == "1" %>
         </span>
         <span class="search-field">
-          <%= label_tag "q[enrolled]", "My Courses" %>
+          <%= label_tag "q[enrolled]", "Enrolled courses" %>
           <%= check_box_tag "q[enrolled]", "1", params.dig(:q, :enrolled) == "1" %>
         </span>
+        <% if current_user.teacher? %>
+          <span class="search-field">
+            <%= label_tag "q[created]", "My courses" %>
+            <%= check_box_tag "q[created]", "1", params.dig(:q, :created) == "1" %>
+          </span>
+        <% end %>
         <span class="search-field">
           <%= label_tag "q[recent]", "Recent Courses" %>
           <%= check_box_tag "q[recent]", "1", params.dig(:q, :recent) == "1" %>

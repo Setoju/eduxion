@@ -23,6 +23,9 @@ class Course < ApplicationRecord
     end
   }
   scope :recent, -> { where("created_at >= ?", 1.week.ago) }
+  scope :created, ->(user_id = nil) {
+    where(instructor_id: user_id)
+  }
 
   validates :title, valid_characters: true, presence: true, length: { minimum: 5, maximum: 50 }
   validates :description, valid_characters: true, presence: true, length: { minimum: 10, maximum: 300 }

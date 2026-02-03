@@ -14,6 +14,10 @@ class CoursesController < ApplicationController
       @courses = @courses.enrolled(current_user.id)
     end
 
+    if params.dig(:q, :created).present? && current_user
+      @courses = @courses.created(current_user.id)
+    end
+
     if params.dig(:q, :recent).present?
       @courses = @courses.recent
     end
@@ -79,13 +83,13 @@ class CoursesController < ApplicationController
     redirect_to new_course_invitation_path(@course)
   end
 
-    private
+  private
 
-      def set_course
-        @course = Course.find(params[:id])
-      end
-
-      def course_params
-        params.require(:course).permit(:title, :description, :instructor_id, :public, :ends_at)
-      end
+    def set_course
+      @course = Course.find(params[:id])
+    end
+    
+    def course_params
+      params.require(:course).permit(:title, :description, :instructor_id, :public, :ends_at)
+    end
 end

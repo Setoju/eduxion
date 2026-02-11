@@ -55,15 +55,15 @@ class TopicsController < ApplicationController
 
   private
 
-  def set_topic
-    @topic = Topic.find(params[:id])
-  end
+    def set_topic
+      @topic = Topic.find(params[:id])
+    end
 
-  def set_course
-    @course = Course.find(params[:course_id])
-  end
+    def set_course
+      @course = Course.find(params[:course_id])
+    end
 
-  def topic_params
-    params.require(:topic).permit(:title, :course_id, :position)
-  end
+    def topic_params
+      params.require(:topic).permit(:title, :course_id, :position)
+    end
 end

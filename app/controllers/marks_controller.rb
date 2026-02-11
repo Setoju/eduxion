@@ -50,22 +50,22 @@ class MarksController < ApplicationController
 
   private
 
-  def set_mark
-    @mark = Mark.find(params[:id])
-    authorize @mark
-  end
+    def set_mark
+      @mark = Mark.find(params[:id])
+      authorize @mark
+    end
 
-  def set_parent_objects
-    @course = Course.find(params[:course_id])
-    @topic = @course.topics.find(params[:topic_id])
-    @lesson = @topic.lessons.find(params[:lesson_id])
-  end
+    def set_parent_objects
+      @course = Course.find(params[:course_id])
+      @topic = @course.topics.find(params[:topic_id])
+      @lesson = @topic.lessons.find(params[:lesson_id])
+    end
 
-  def mark_params
-    params.require(:mark).permit(:value, :comment, :response_id)
-  end
+    def mark_params
+      params.require(:mark).permit(:value, :comment, :response_id)
+    end
 
-  def response_params
-    params.require(:mark).permit(:value, :response)
-  end
+    def response_params
+      params.require(:mark).permit(:value, :response)
+    end
 end

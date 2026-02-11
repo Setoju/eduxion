@@ -26,19 +26,19 @@ module Lessons
 
     private
 
-    def validate_context!
-      if context.params.nil? || context.course.nil? || context.topic.nil?
-        context.fail!(error: "Invalid context")
+      def validate_context!
+        if context.params.nil? || context.course.nil? || context.topic.nil?
+          context.fail!(error: "Invalid context")
+        end
       end
-    end
 
-    def create_lesson(params)
-      @lesson = Lesson.new(params)
-      @lesson.topic = context.topic
-          
-      if @lesson.content_type == "text" && @lesson.content.present?
-        @lesson.content_checksum = Digest::SHA256.hexdigest(@lesson.content.strip)
+      def create_lesson(params)
+        @lesson = Lesson.new(params)
+        @lesson.topic = context.topic
+
+        if @lesson.content_type == "text" && @lesson.content.present?
+          @lesson.content_checksum = Digest::SHA256.hexdigest(@lesson.content.strip)
+        end
       end
-    end
   end
 end

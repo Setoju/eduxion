@@ -28,18 +28,18 @@ class QuestionsController < ApplicationController
 
   private
 
-  def set_lesson
-    @lesson = Lesson.find(params[:lesson_id])
-  end
+    def set_lesson
+      @lesson = Lesson.find(params[:lesson_id])
+    end
 
-  def set_course_data
-    @course = Course.find(params[:course_id])
-    @topic = Topic.find(params[:topic_id])
-    @lesson = Lesson.find(params[:lesson_id])
-    @user = current_user
-  end
+    def set_course_data
+      @course = Course.find(params[:course_id])
+      @topic = Topic.find(params[:topic_id])
+      @lesson = Lesson.find(params[:lesson_id])
+      @user = current_user
+    end
 
-  def question_params
+    def question_params
       params.require(:question).permit(:title, :content, :lesson_id, options_attributes: [:id, :title, :is_correct, :_destroy])
-  end
+    end
 end

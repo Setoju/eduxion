@@ -1,4 +1,4 @@
-require 'whatlanguage'
+require "whatlanguage"
 
 module Lessons
   class SentenceSplitter
@@ -13,24 +13,24 @@ module Lessons
 
     private
 
-    def detect_language
-      wl = WhatLanguage.new(:all)
-      detected = wl.language_iso(@text)
+      def detect_language
+        wl = WhatLanguage.new(:all)
+        detected = wl.language_iso(@text)
 
-      language_mapping = {
-        'english' => :en,
-        'spanish' => :es,
-        'french' => :fr,
-        'german' => :de,
-        'italian' => :it,
-        'portuguese' => :pt,
-        'russian' => :ru,
-        'arabic' => :ar,
-        'japanese' => :ja,
-        'chinese' => :zh
-      }
+        language_mapping = {
+          "english" => :en,
+          "spanish" => :es,
+          "french" => :fr,
+          "german" => :de,
+          "italian" => :it,
+          "portuguese" => :pt,
+          "russian" => :ru,
+          "arabic" => :ar,
+          "japanese" => :ja,
+          "chinese" => :zh
+        }
 
-      language_mapping[detected] || :en
-    end
+        language_mapping[detected] || :en
+      end
   end
 end

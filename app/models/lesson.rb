@@ -1,5 +1,6 @@
 class Lesson < ApplicationRecord
   has_many :questions, dependent: :destroy
+  has_many :lecture_questions, dependent: :destroy
   has_many :responses, as: :responseable
   has_many :marks, dependent: :destroy
   has_many :responses, through: :marks, dependent: :destroy

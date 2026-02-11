@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_11_070737) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_11_072121) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -93,6 +93,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_11_070737) do
     t.datetime "ends_at"
     t.boolean "is_open", default: true
     t.string "attachment"
+    t.string "question_generation_status", default: "pending"
+    t.string "content_checksum"
     t.index ["student_response_id"], name: "index_lessons_on_student_response_id"
     t.index ["topic_id"], name: "index_lessons_on_topic_id"
   end

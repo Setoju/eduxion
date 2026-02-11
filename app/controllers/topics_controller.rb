@@ -23,7 +23,7 @@ class TopicsController < ApplicationController
 
     if result.success?
       authorize result.topic
-      redirect_to course_topics_path(@course), notice: "Topic was successfully created."
+      redirect_to course_path(@course), notice: "Topic was successfully created."
     else
       @topic = Topic.new(topic_params)
       redirect_to new_course_topic_path(@course), alert: "Error creating topic: #{result.error}"
@@ -53,17 +53,17 @@ class TopicsController < ApplicationController
     redirect_to course_topics_path(@course), notice: "Topic was successfully destroyed."
   end
 
-    private
+  private
 
-      def set_topic
-        @topic = Topic.find(params[:id])
-      end
+  def set_topic
+    @topic = Topic.find(params[:id])
+  end
 
-      def set_course
-        @course = Course.find(params[:course_id])
-      end
+  def set_course
+    @course = Course.find(params[:course_id])
+  end
 
-      def topic_params
-        params.require(:topic).permit(:title, :course_id, :position)
-      end
+  def topic_params
+    params.require(:topic).permit(:title, :course_id, :position)
+  end
 end

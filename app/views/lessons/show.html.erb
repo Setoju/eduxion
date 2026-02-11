@@ -46,6 +46,22 @@
         </div>
       </div>
 
+      <div>
+        <h2>Summary questions</h2>
+        <div class="card mb-4">
+          <div class="card-body">
+            <% if @lesson.lecture_questions.any? %>
+              <ol class="mb-3 ps-3">
+                <% @lesson.lecture_questions.each do |question| %>
+                  <li><%= question.question_text %></li>
+                <% end %>
+              </ol>
+            <% else %>
+              <p class="text-muted">No summary questions generated yet.</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
 
       <% if @user.role.in?(%w[student teacher]) %>
         <div class="lesson-interaction">

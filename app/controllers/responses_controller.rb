@@ -49,30 +49,30 @@ class ResponsesController < ApplicationController
     end
   end
 
-    private
+  private
 
-      def no_edit_after_lesson_ends
-        result = Lessons::NoEditAfterLessonEnds.call(lesson: @lesson)
+  def no_edit_after_lesson_ends
+    result = Lessons::NoEditAfterLessonEnds.call(lesson: @lesson)
 
-        if result.success?
-          true
-        else
-          @user = current_user
-          @response = @lesson.responses.new(user: current_user)
-          @responses = @lesson.responses
-          @user_response = @lesson.responses.find_by(user: current_user)
-          @mark = Mark.new(lesson: @lesson)
+    if result.success?
+      true
+    else
+      @user = current_user
+      @response = @lesson.responses.new(user: current_user)
+      @responses = @lesson.responses
+      @user_response = @lesson.responses.find_by(user: current_user)
+      @mark = Mark.new(lesson: @lesson)
 
-          flash.now[:alert] = result.error
-          render "lessons/show", status: :unprocessable_entity
-        end
-      end
+      flash.now[:alert] = result.error
+      render "lessons/show", status: :unprocessable_entity
+    end
+  end
 
-      def set_lesson
-        @lesson = Lesson.find(params[:lesson_id])
-      end
+  def set_lesson
+    @lesson = Lesson.find(params[:lesson_id])
+  end
 
-      def response_params
-        params.require(:response).permit(:content, :responseable_type, :responseable_id)
-      end
+  def response_params
+    params.require(:response).permit(:content, :responseable_type, :responseable_id)
+  end
 end

@@ -54,8 +54,7 @@ module Lessons
           @lesson.lecture_questions.destroy_all
 
           @lesson.update!(question_generation_status: "pending")
-          Lessons::TextProcessor.new(@lesson).call
-          Lessons::AiSummary::TextSummarizer.new(@lesson).call
+          LectureQuestionsGeneratorJob.perform_later(@lesson.id)
         end
       end
   end

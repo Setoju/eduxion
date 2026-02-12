@@ -32,13 +32,8 @@ class LessonsController < ApplicationController
     )
 
     if result.success?
-      Rails.logger.info "Lesson created successfully: #{result.lesson.id}, content_type: #{result.lesson.content_type}"
-
       if result.lesson.content_type == "text"
-        Lessons::TextProcessor.new(result.lesson).call
-        result.lesson.reload
-
-        Lessons::AiSummary::TextSummarizer.new(result.lesson).call
+        LectureQuestionsGeneratorJob.perform_later(result.lesson.id)
       end
 
       authorize result.lesson

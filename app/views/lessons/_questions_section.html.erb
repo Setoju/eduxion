@@ -1,0 +1,50 @@
+<div>
+  <h2>Summary questions</h2>
+  <div class="card mb-4">
+    <div class="card-body">
+      <% if lesson.content_type == "text" %>
+        <% case lesson.question_generation_status %>
+        <% when "pending" %>
+          <div class="alert alert-info d-flex align-items-center">
+            <div class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></div>
+            <span>Questions will be generated shortly...</span>
+          </div>
+        <% when "generating" %>
+          <div class="alert alert-info d-flex align-items-center">
+            <div class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></div>
+            <span>Generating summary questions...</span>
+          </div>
+        <% when "generated" %>
+          <% if lesson.lecture_questions.any? %>
+            <ol class="mb-3 ps-3">
+              <% lesson.lecture_questions.each do |question| %>
+                <li><%= question.question_text %></li>
+              <% end %>
+            </ol>
+          <% else %>
+            <div class="alert alert-warning">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              Questions were processed but none could be generated from the content.
+            </div>
+          <% end %>
+        <% when "failed" %>
+          <div class="alert alert-danger d-flex align-items-center">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span>Failed to generate questions. Please try again later.</span>
+          </div>
+        <% end %>
+      <% else %>
+        <!-- For non-text content types -->
+        <% if lesson.lecture_questions.any? %>
+          <ol class="mb-3 ps-3">
+            <% lesson.lecture_questions.each do |question| %>
+              <li><%= question.question_text %></li>
+            <% end %>
+          </ol>
+        <% else %>
+          <p class="text-muted">No summary questions available for this content type.</p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

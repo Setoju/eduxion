@@ -11,7 +11,7 @@ module Lessons
       def call
         return unless @lesson.content_type == "text" && @lesson.content.present?
 
-        @lesson.update!(question_generation_status: "generating")
+        update_status("generating")
 
         chunks = @lesson.lesson_ai_summaries
         Rails.logger.info "TextSummarizer: Found #{chunks.count} chunks for lesson #{@lesson.id}"
@@ -33,18 +33,37 @@ module Lessons
               position: index
           )
         end
-      ensure
-        @lesson.update!(question_generation_status: "generated")
+
+        update_status("generated")
+        broadcast_questions_update
+      rescue => e
+        Rails.logger.error "TextSummarizer failed for lesson #{@lesson.id}: #{e.message}"
+        update_status("failed")
+        broadcast_questions_update
+        raise
       end
 
       private
+
+      def update_status(status)
+        @lesson.update!(question_generation_status: status)
+      end
+
+      def broadcast_questions_update
+        Turbo::StreamsChannel.broadcast_replace_to(
+          "lesson_#{@lesson.id}_questions",
+          target: "lesson_questions",
+          partial: "lessons/questions_section",
+          locals: { lesson: @lesson.reload }
+        )
+      end
 
       def summarize_chunks(chunks)
         summaries = []
 
         chunks.each_with_index do |chunk, index|
           # Add small delay to avoid rate limiting
-          sleep(0.5) if index > 0
+          sleep(2) if index > 0
 
           summary = summarize_single_chunk(chunk.summary_text)
           summaries << summary if summary.present?

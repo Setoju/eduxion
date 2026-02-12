@@ -4,6 +4,8 @@
     <div class="card-body">
       <% if lesson.content_type == "text" %>
         <% case lesson.question_generation_status %>
+        <% when "disabled" %>
+          <p class="text-muted">Question generation is disabled for this lesson.</p>
         <% when "pending" %>
           <div class="alert alert-info d-flex align-items-center">
             <div class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></div>

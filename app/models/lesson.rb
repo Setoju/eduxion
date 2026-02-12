@@ -8,16 +8,22 @@ class Lesson < ApplicationRecord
   has_many :notifications, dependent: :destroy, as: :recipient, class_name: "Noticed::Notification"
   belongs_to :topic
 
+  attribute :generate_summary_questions, :boolean, default: false
+  attribute :no_end_date, :boolean, default: false
+
+  after_initialize :initialize_virtual_attributes, if: :persisted?
+
   scope :ordered, -> { order(Arel.sql("COALESCE(position, 9999) ASC"), :created_at) }
 
   before_validation :set_default_content_type
+  before_validation :clear_ends_at_if_no_end_date
 
   validates :title, valid_characters: true, presence: true, length: { minimum: 5, maximum: 50 }
   validates :content, presence: true, length: { minimum: 10 }, unless: -> { content_type == "video" }
   validates :video_url, presence: true, if: -> { content_type == "video" }
   validates :topic, presence: true
   validates :position, numericality: { greater_than_or_equal_to: 1 }, allow_nil: true
-  validates :question_generation_status, inclusion: { in: %w[pending generating generated failed] }, presence: true, if: :ai_questions_applicable?
+  validates :question_generation_status, inclusion: { in: %w[disabled pending generating generated failed] }, presence: true, if: :ai_questions_applicable?
   validates :content_checksum, presence: true, if: :ai_questions_applicable?
 
   ALLOWED_CONTENT_TYPES = [ "text", "video", "quiz" ].freeze
@@ -53,6 +59,10 @@ class Lesson < ApplicationRecord
       LessonCloseJob.set(wait_until: ends_at).perform_later(id)
     end
 
+    def clear_ends_at_if_no_end_date
+      self.ends_at = nil if no_end_date
+    end
+
     def content_required?
       content_type != "video"
     end
@@ -63,5 +73,10 @@ class Lesson < ApplicationRecord
 
     def set_default_content_type
       self.content_type = "text" if content_type.blank? || !ALLOWED_CONTENT_TYPES.include?(content_type)
+    end
+
+    def initialize_virtual_attributes
+      self.no_end_date = ends_at.blank?
+      self.generate_summary_questions = question_generation_status != "disabled"
     end
 end

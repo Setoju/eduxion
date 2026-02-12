@@ -24,6 +24,16 @@
             <div class="mb-3">
               <%= form.label :content, class: "form-label" %>
               <%= form.text_area :content, class: "form-control", rows: 8, placeholder: "Enter lesson content" %>
+
+              <%= form.label :no_end_date, "No end date", class: "form-label ms-3" %>
+              <%= form.check_box :no_end_date, class: "form-check-input", data: { controller: "no-end-date", action: "change->no-end-date#toggle" } %>
+
+              <% if @lesson.content_type == "text"%>
+                <div class="mb-3">
+                  <%= form.label :generate_summary_questions, "Generate summary questions", class: "form-label" %>
+                  <%= form.check_box :generate_summary_questions, class: "form-check-input", data: { controller: "generate-summary-questions", action: "change->generate-summary-questions#toggle" } %>
+                </div>
+              <% end %>
             </div>
 
             <% if @lesson.content_type == "video" %>
@@ -46,7 +56,8 @@
                 <div class="input-group">
                   <%= form.datetime_local_field :ends_at, 
                                               class: "form-control",
-                                              value: @lesson.ends_at&.strftime("%Y-%m-%dT%H:%M") %>
+                                              value: @lesson.ends_at&.strftime("%Y-%m-%dT%H:%M"),
+                                              data: { "end-date-field": true } %>
                 </div>
                 <div class="form-text">When this lesson will stop accepting responses</div>
               </div>

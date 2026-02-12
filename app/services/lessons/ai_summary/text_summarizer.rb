@@ -1,9 +1,9 @@
 module Lessons
   module AiSummary
     class TextSummarizer
-      def initialize(lesson, num_questions: 5)
+      def initialize(lesson)
         @lesson = lesson
-        @num_questions = num_questions
+        @num_questions = define_num_questions
         # gemini-2.5-flash-lite for multilingual support gemma-3-1b-it
         @base_url = "https://generativelanguage.googleapis.com/v1beta/models/gemma-3-1b-it:generateContent"
       end
@@ -45,6 +45,18 @@ module Lessons
 
       private
 
+      def define_num_questions
+        chunks = @lesson.lesson_ai_summaries
+        case chunks.count
+        when 1..3
+          3
+        when 4..10
+          5
+        else
+          10
+        end
+      end
+
       def update_status(status)
         @lesson.update!(question_generation_status: status)
       end
@@ -63,7 +75,7 @@ module Lessons
 
         chunks.each_with_index do |chunk, index|
           # Add small delay to avoid rate limiting
-          sleep(2) if index > 0
+          sleep(0.5) if index > 0
 
           summary = summarize_single_chunk(chunk.summary_text)
           summaries << summary if summary.present?

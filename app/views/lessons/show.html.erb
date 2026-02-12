@@ -46,10 +46,12 @@
         </div>
       </div>
 
-      <%= turbo_stream_from "lesson_#{@lesson.id}_questions" %>
-      <div id="lesson_questions">
-        <%= render "lessons/questions_section", lesson: @lesson %>
-      </div>
+      <% if @lesson.content_type == "text" %>
+        <%= turbo_stream_from "lesson_#{@lesson.id}_questions" %>
+        <div id="lesson_questions">
+          <%= render "lessons/questions_section", lesson: @lesson %>
+        </div>
+      <% end %>
 
       <% if @user.role.in?(%w[student teacher]) %>
         <div class="lesson-interaction">

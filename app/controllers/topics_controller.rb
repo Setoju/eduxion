@@ -8,9 +8,6 @@ class TopicsController < ApplicationController
   end
 
   def show
-    @topic = Topic.find(params[:id])
-    authorize @topic
-    @lessons = @topic.lessons.order(:position).page(params[:page]).per(10)
   end
 
   def new
@@ -39,7 +36,7 @@ class TopicsController < ApplicationController
     result = Topics::UpdateTopic.call(id: @topic.id, params: topic_params)
 
     if result.success?
-      redirect_to course_topics_path(@course), notice: "Topic was successfully updated."
+      redirect_to course_path(@course), notice: "Topic was successfully updated."
     else
       @topic.assign_attributes(topic_params)
       flash[:alert] = result.error
@@ -50,7 +47,7 @@ class TopicsController < ApplicationController
   def destroy
     authorize @topic
     @topic.destroy
-    redirect_to course_topics_path(@course), notice: "Topic was successfully destroyed."
+    redirect_to course_path(@course), notice: "Topic was successfully destroyed."
   end
 
   private

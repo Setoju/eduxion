@@ -32,10 +32,6 @@ class LessonsController < ApplicationController
     )
 
     if result.success?
-      if result.lesson.content_type == "text"
-        LectureQuestionsGeneratorJob.perform_later(result.lesson.id)
-      end
-
       authorize result.lesson
       redirect_to course_path(@course), notice: "Lesson was successfully created."
     else
@@ -59,7 +55,7 @@ class LessonsController < ApplicationController
     )
 
     if result.success?
-      redirect_to course_path(@course), notice: "Lesson was successfully updated."
+      redirect_to course_topic_lesson_path(@course, @topic, @lesson), notice: "Lesson was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -104,6 +100,6 @@ class LessonsController < ApplicationController
     end
 
     def lesson_params
-      params.require(:lesson).permit(:title, :content, :content_type, :topic_id, :position, :video_url, :student_response_id, :ends_at)
+      params.require(:lesson).permit(:title, :content, :content_type, :topic_id, :position, :video_url, :student_response_id, :ends_at, :no_end_date, :generate_summary_questions)
     end
 end

@@ -1,5 +1,7 @@
 class Lesson < ApplicationRecord
   has_many :questions, dependent: :destroy
+  has_many :lecture_questions, dependent: :destroy
+  has_many :lesson_ai_summaries, dependent: :destroy
   has_many :responses, as: :responseable
   has_many :marks, dependent: :destroy
   has_many :responses, through: :marks, dependent: :destroy
@@ -11,10 +13,12 @@ class Lesson < ApplicationRecord
   before_validation :set_default_content_type
 
   validates :title, valid_characters: true, presence: true, length: { minimum: 5, maximum: 50 }
-  validates :content, valid_characters: true, presence: true, length: { minimum: 10 }, unless: -> { content_type == "video" }
+  validates :content, presence: true, length: { minimum: 10 }, unless: -> { content_type == "video" }
   validates :video_url, presence: true, if: -> { content_type == "video" }
   validates :topic, presence: true
   validates :position, numericality: { greater_than_or_equal_to: 1 }, allow_nil: true
+  validates :question_generation_status, inclusion: { in: %w[pending generating generated failed] }, presence: true, if: :ai_questions_applicable?
+  validates :content_checksum, presence: true, if: :ai_questions_applicable?
 
   ALLOWED_CONTENT_TYPES = [ "text", "video", "quiz" ].freeze
 
@@ -51,6 +55,10 @@ class Lesson < ApplicationRecord
 
     def content_required?
       content_type != "video"
+    end
+
+    def ai_questions_applicable?
+      content_type == "text"
     end
 
     def set_default_content_type

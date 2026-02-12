@@ -32,8 +32,12 @@ class LessonsController < ApplicationController
     )
 
     if result.success?
+      if result.lesson.content_type == "text"
+        LectureQuestionsGeneratorJob.perform_later(result.lesson.id)
+      end
+
       authorize result.lesson
-      redirect_to course_topic_path(@course, @topic), notice: "Lesson was successfully created."
+      redirect_to course_path(@course), notice: "Lesson was successfully created."
     else
       @lesson = result.lesson || Lesson.new(lesson_params)
       flash.now[:alert] = "Error creating lesson: #{result.error}"
@@ -55,7 +59,7 @@ class LessonsController < ApplicationController
     )
 
     if result.success?
-      redirect_to course_topic_path(@course, @topic), notice: "Lesson was successfully updated."
+      redirect_to course_path(@course), notice: "Lesson was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -64,7 +68,7 @@ class LessonsController < ApplicationController
   def destroy
     authorize @lesson
     @lesson.destroy
-    redirect_to course_topic_path(@course, @topic), notice: "Lesson was successfully destroyed."
+    redirect_to course_path(@course), notice: "Lesson was successfully destroyed."
   end
 
   def submit_quiz_answers
@@ -81,12 +85,22 @@ class LessonsController < ApplicationController
   private
 
     def set_course_data
-      @topic = Topic.find(params[:topic_id])
-      @course = Course.find(params[:course_id])
+      @topic = Topic.find_by(id: params[:topic_id])
+      @course = Course.find_by(id: params[:course_id])
+
+      unless @topic && @course
+        redirect_to courses_path, alert: "Topic or Course not found"
+        nil
+      end
     end
 
     def set_lesson
-      @lesson = Lesson.find(params[:id])
+      @lesson = Lesson.find_by(id: params[:id])
+
+      unless @lesson
+        redirect_to course_topic_path(@course, @topic), alert: "Lesson not found"
+        nil
+      end
     end
 
     def lesson_params

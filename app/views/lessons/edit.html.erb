@@ -57,6 +57,9 @@
               <%= link_to "Cancel", course_topic_lesson_path(@course, @topic, @lesson), class: "btn btn-outline-secondary ms-2" %>
             </div>
           <% end %>
+          <div class="form-actions mt-4">
+            <%= button_to "Delete", course_topic_lesson_path(@course, @topic, @lesson), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger ms-2" %>
+          </div>
         </div>
       </div>
     </div>

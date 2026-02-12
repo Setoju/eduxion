@@ -10,7 +10,7 @@ class MessagesController < ApplicationController
         render json: @messages, each_serializer: MessageSerializer, include: [:user]
       end
     end
-end
+  end
 
   def create
     @message = current_user.messages.build(message_params)
@@ -19,11 +19,11 @@ end
     else
       render json: { errors: @message.errors.full_messages }, status: :unprocessable_entity
     end
-end
+  end
 
-    private
+  private
 
-      def message_params
-        params.require(:message).permit(:content)
-      end
+    def message_params
+      params.require(:message).permit(:content)
+    end
 end

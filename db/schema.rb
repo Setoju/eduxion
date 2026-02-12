@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_28_083523) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_11_072121) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -60,6 +60,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_083523) do
     t.index ["token"], name: "index_invitations_on_token", unique: true
   end
 
+  create_table "lecture_questions", force: :cascade do |t|
+    t.text "question_text"
+    t.text "answer_text"
+    t.integer "position"
+    t.bigint "lesson_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_id", "position"], name: "index_lecture_questions_on_lesson_id_and_position"
+    t.index ["lesson_id"], name: "index_lecture_questions_on_lesson_id"
+  end
+
+  create_table "lesson_ai_summaries", force: :cascade do |t|
+    t.integer "chunk_index"
+    t.text "summary_text"
+    t.bigint "lesson_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_lesson_ai_summaries_on_lesson_id"
+  end
+
   create_table "lessons", force: :cascade do |t|
     t.string "title"
     t.text "content"
@@ -73,6 +93,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_083523) do
     t.datetime "ends_at"
     t.boolean "is_open", default: true
     t.string "attachment"
+    t.string "question_generation_status", default: "pending"
+    t.string "content_checksum"
     t.index ["student_response_id"], name: "index_lessons_on_student_response_id"
     t.index ["topic_id"], name: "index_lessons_on_topic_id"
   end
@@ -188,6 +210,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_083523) do
   add_foreign_key "enrollments", "users"
   add_foreign_key "invitations", "courses"
   add_foreign_key "invitations", "users", column: "invited_by_id"
+  add_foreign_key "lecture_questions", "lessons"
+  add_foreign_key "lesson_ai_summaries", "lessons"
   add_foreign_key "lessons", "responses", column: "student_response_id", on_delete: :nullify
   add_foreign_key "lessons", "topics"
   add_foreign_key "marks", "lessons"

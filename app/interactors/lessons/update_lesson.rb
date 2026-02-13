@@ -8,7 +8,7 @@ module Lessons
       update_lesson(context.id, context.params)
 
       if @lesson.persisted?
-        handle_summary_questions
+        Lessons::UpdateSummaryQuestions.call(lesson: @lesson)
         message = "Teacher #{@lesson.topic.course.instructor.first_name} updated lesson: #{@lesson.title}"
         url = Rails.application.routes.url_helpers.course_topic_lesson_path(@lesson.topic.course, @lesson.topic, @lesson)
         @lesson.topic.course.students.each do |student|
@@ -40,46 +40,8 @@ module Lessons
 
       def update_lesson(id, params)
         @lesson = Lesson.find(id)
-        @generate_summary_questions = ActiveModel::Type::Boolean.new.cast(params[:generate_summary_questions])
         @lesson.assign_attributes(params)
-        
-        if @lesson.content_type == "text"
-          @lesson.question_generation_status = @generate_summary_questions ? "pending" : "disabled"
-        end
-        
         @lesson.save
-      end
-
-      def handle_summary_questions
-        return if @lesson.content_type != "text"
-
-        if @lesson.generate_summary_questions
-          generate_questions
-        else
-          remove_questions
-        end
-      end
-
-      def generate_questions
-        return if @lesson.content.blank?
-
-        new_checksum = Digest::SHA256.hexdigest(@lesson.content.strip)
-        return if @lesson.content_checksum == new_checksum && @lesson.lecture_questions.any?
-
-        @lesson.update!(content_checksum: new_checksum)
-        @lesson.lesson_ai_summaries.destroy_all
-        @lesson.lecture_questions.destroy_all
-
-        @lesson.update!(question_generation_status: "pending")
-        LectureQuestionsGeneratorJob.perform_later(@lesson.id)
-      end
-
-      def remove_questions
-        return unless @lesson.lecture_questions.any? || @lesson.lesson_ai_summaries.any?
-
-        @lesson.lesson_ai_summaries.destroy_all
-        @lesson.lecture_questions.destroy_all
-        @lesson.update!(question_generation_status: "disabled")
       end
   end
 end

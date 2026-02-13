@@ -8,7 +8,7 @@ module Lessons
       create_lesson(context.params)
 
       if @lesson.save
-        enqueue_question_generation if @lesson.generate_summary_questions
+        Lessons::UpdateSummaryQuestions.call(lesson: @lesson)
 
         message = "Teacher #{@lesson.topic.course.instructor.first_name} edited the lesson: #{@lesson.title}"
         url = Rails.application.routes.url_helpers.course_topic_lesson_path(@lesson.topic.course, @lesson.topic, @lesson)
@@ -38,14 +38,10 @@ module Lessons
         @lesson = Lesson.new(params)
         @lesson.topic = context.topic
 
-        if @lesson.content_type == "text" && @lesson.content.present?
-          @lesson.content_checksum = Digest::SHA256.hexdigest(@lesson.content.strip)
-          @lesson.question_generation_status = @lesson.generate_summary_questions ? "pending" : "disabled"
+        if @lesson.content_type == "text"
+          @lesson.question_generation_status = "disabled"
+          @lesson.content_checksum = Digest::SHA256.hexdigest(@lesson.content.strip) if @lesson.content.present?
         end
-      end
-
-      def enqueue_question_generation
-        LectureQuestionsGeneratorJob.perform_later(@lesson.id)
       end
   end
 end

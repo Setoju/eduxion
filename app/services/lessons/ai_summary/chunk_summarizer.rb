@@ -22,7 +22,7 @@ module Lessons
 
       def prompt_for(chunk_text)
         <<~PROMPT
-          Please provide a concise summary of the following educational text chunk.#{' '}
+          Please provide a concise summary of the following educational text chunk.
           Focus on the key concepts, main points, and important details that a student should understand.
           Keep the summary informative but brief (2-3 sentences).
           The summary should be in the same language as the original text.

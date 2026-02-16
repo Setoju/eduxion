@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :lesson do
     title { Faker::Lorem.sentence }
     content { Faker::Lorem.sentence }
+    content_checksum { SecureRandom.hex(10) }
     topic { association(:topic) }
     position { 1 }
 

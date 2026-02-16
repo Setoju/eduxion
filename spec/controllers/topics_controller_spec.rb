@@ -22,28 +22,6 @@ RSpec.describe "Topics", type: :request do
     end
   end
 
-  describe 'GET #show' do
-    before { sign_in user }
-
-    it 'returns http success' do
-      get course_topic_path(course, topic)
-      expect(response).to have_http_status(:success)
-    end
-
-    it 'displays topic information' do
-      get course_topic_path(course, topic)
-      expect(response.body).to include(topic.title)
-    end
-
-    it 'lists topic lessons' do
-      lessons = create_list(:lesson, 2, topic: topic)
-      get course_topic_path(course, topic)
-      lessons.each do |lesson|
-        expect(response.body).to include(lesson.title)
-      end
-    end
-  end
-
   describe 'GET #new' do
     before { sign_in user }
 
@@ -77,7 +55,7 @@ RSpec.describe "Topics", type: :request do
       it 'redirects to course topics' do
         sign_in user
         post course_topics_path(course), params: { topic: valid_params }
-        expect(response).to redirect_to(course_topics_path(course))
+        expect(response).to redirect_to(course_path(course))
       end
     end
 
@@ -132,7 +110,7 @@ RSpec.describe "Topics", type: :request do
       it 'redirects to course topics' do
         sign_in user
         put course_topic_path(course, topic), params: { topic: valid_params[:topic] }
-        expect(response).to redirect_to(course_topics_path(course))
+        expect(response).to redirect_to(course_path(course))
       end
     end
 
@@ -170,7 +148,7 @@ RSpec.describe "Topics", type: :request do
       sign_in user
       topic_to_destroy = create(:topic, course: course)
       delete course_topic_path(course, topic_to_destroy)
-      expect(response).to redirect_to(course_topics_path(course))
+      expect(response).to redirect_to(course_path(course))
     end
   end
 

@@ -21,7 +21,7 @@ RSpec.describe 'Topic creation', type: :system do
   end
 
   it 'allows a user to delete a topic' do
-    visit course_topics_path(course)
+    visit course_path(course)
 
     click_button 'Delete'
 

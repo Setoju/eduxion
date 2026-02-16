@@ -32,7 +32,7 @@ RSpec.describe 'Topic creation', type: :system do
   it 'allows a user to create a lesson within a topic' do
     visit course_path(course)
 
-    click_link 'New Lesson'
+    click_link 'Add Lesson'
 
     choose 'Text Lesson'
     click_button 'Continue'

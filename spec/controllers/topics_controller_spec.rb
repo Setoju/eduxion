@@ -9,13 +9,13 @@ RSpec.describe "Topics", type: :request do
     before { sign_in user }
 
     it 'returns http success' do
-      get course_topics_path(course)
+      get course_path(course)
       expect(response).to have_http_status(:success)
     end
 
     it 'lists all topics' do
       topics = create_list(:topic, 3, course: course)
-      get course_topics_path(course)
+      get course_path(course)
       topics.each do |topic|
         expect(response.body).to include(topic.title)
       end

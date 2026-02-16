@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :lesson do
-    title { Faker::Lorem.sentence }
+    title { Faker::Lorem.sentence.truncate(50) }
     content { Faker::Lorem.sentence }
     content_checksum { SecureRandom.hex(10) }
     topic { association(:topic) }
@@ -16,8 +16,8 @@ FactoryBot.define do
       content { Faker::Lorem.sentence }
     end
 
-    trait :with_test do
-      content_type { "test" }
+    trait :with_quiz do
+      content_type { "quiz" }
       content { Faker::Lorem.sentence }
     end
   end

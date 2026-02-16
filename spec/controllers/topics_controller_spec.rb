@@ -26,13 +26,11 @@ RSpec.describe "Topics", type: :request do
     before { sign_in user }
 
     it 'returns http success' do
-      sign_in user
       get new_course_topic_path(course)
       expect(response).to have_http_status(:success)
     end
 
     it 'renders the new topic form' do
-      sign_in user
       get new_course_topic_path(course)
       expect(response.body).to include('Topic')
       expect(response.body).to include('Create Topic')
@@ -46,14 +44,12 @@ RSpec.describe "Topics", type: :request do
       let(:valid_params) { attributes_for(:topic, course_id: course.id) }
 
       it 'creates a new topic' do
-        sign_in user
         expect {
           post course_topics_path(course), params: { topic: valid_params }
         }.to change(Topic, :count).by(1)
       end
 
       it 'redirects to course topics' do
-        sign_in user
         post course_topics_path(course), params: { topic: valid_params }
         expect(response).to redirect_to(course_path(course))
       end
@@ -63,14 +59,12 @@ RSpec.describe "Topics", type: :request do
       let(:invalid_params) { { topic: { title: '' } } }
 
       it 'does not create a new topic' do
-        sign_in user
         expect {
           post course_topics_path(course), params: { topic: invalid_params[:topic] }
         }.to_not change(Topic, :count)
       end
 
       it 'renders the new template' do
-        sign_in user
         post course_topics_path(course), params: { topic: invalid_params[:topic] }
         expect(response).to redirect_to(new_course_topic_path(course))
       end
@@ -81,13 +75,11 @@ RSpec.describe "Topics", type: :request do
     before { sign_in user }
 
     it 'returns http success' do
-      sign_in user
       get edit_course_topic_path(course, topic)
       expect(response).to have_http_status(:success)
     end
 
     it 'renders the edit form' do
-      sign_in user
       get edit_course_topic_path(course, topic)
       expect(response.body).to include(topic.title)
     end
@@ -101,14 +93,12 @@ RSpec.describe "Topics", type: :request do
       let(:valid_params) { { topic: { title: new_title } } }
 
       it 'updates the topic' do
-        sign_in user
         put course_topic_path(course, topic), params: { topic: valid_params[:topic] }
         topic.reload
         expect(topic.title).to eq(new_title)
       end
 
       it 'redirects to course topics' do
-        sign_in user
         put course_topic_path(course, topic), params: { topic: valid_params[:topic] }
         expect(response).to redirect_to(course_path(course))
       end
@@ -118,7 +108,6 @@ RSpec.describe "Topics", type: :request do
       let(:invalid_params) { { topic: { title: '' } } }
 
       it 'does not update the topic' do
-        sign_in user
         original_title = topic.title
         put course_topic_path(course, topic), params: { topic: invalid_params[:topic] }
         topic.reload
@@ -126,7 +115,6 @@ RSpec.describe "Topics", type: :request do
       end
 
       it 'renders the edit template' do
-        sign_in user
         put course_topic_path(course, topic), params: { topic: invalid_params[:topic] }
         expect(response).to render_template(:edit)
       end
@@ -137,7 +125,6 @@ RSpec.describe "Topics", type: :request do
     before { sign_in user }
 
     it 'destroys the topic' do
-      sign_in user
       topic_to_destroy = create(:topic, course: course)
       expect {
         delete course_topic_path(course, topic_to_destroy)
@@ -145,7 +132,6 @@ RSpec.describe "Topics", type: :request do
     end
 
     it 'redirects to course topics' do
-      sign_in user
       topic_to_destroy = create(:topic, course: course)
       delete course_topic_path(course, topic_to_destroy)
       expect(response).to redirect_to(course_path(course))
@@ -154,8 +140,6 @@ RSpec.describe "Topics", type: :request do
 
   describe 'authorization' do
     let(:other_user) { create(:user, :teacher) }
-
-    before { sign_in other_user }
 
     it 'redirects if user is not course instructor' do
       other_user = create(:user, :teacher)

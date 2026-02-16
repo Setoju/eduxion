@@ -43,13 +43,11 @@ RSpec.describe "Courses", type: :request do
     before { sign_in user }
 
     it 'returns http success' do
-      sign_in user
       get new_course_path
       expect(response).to have_http_status(:success)
     end
 
     it 'renders the new course form' do
-      sign_in user
       get new_course_path
       expect(response.body).to include('New Course')
     end
@@ -62,14 +60,12 @@ RSpec.describe "Courses", type: :request do
       let(:valid_params) { attributes_for(:course) }
 
       it 'creates a new course' do
-        sign_in user
         expect {
           post courses_path, params: { course: valid_params }
         }.to change(Course, :count).by(1)
       end
 
       it 'redirects to the created course' do
-        sign_in user
         post courses_path, params: { course: valid_params }
         expect(response).to redirect_to(Course.last)
       end
@@ -79,14 +75,12 @@ RSpec.describe "Courses", type: :request do
       let(:invalid_params) { { course: { title: '' } } }
 
       it 'does not create a new course' do
-        sign_in user
         expect {
           post courses_path, params: invalid_params
         }.to_not change(Course, :count)
       end
 
       it 'renders the new template' do
-        sign_in user
         post courses_path, params: invalid_params
         expect(response).to redirect_to(new_course_path)
       end
@@ -97,13 +91,11 @@ RSpec.describe "Courses", type: :request do
     before { sign_in user }
 
     it 'returns http success' do
-      sign_in user
       get edit_course_path(course)
       expect(response).to have_http_status(:success)
     end
 
     it 'renders the edit form' do
-      sign_in user
       get edit_course_path(course)
       expect(response.body).to include(course.title)
     end
@@ -117,14 +109,12 @@ RSpec.describe "Courses", type: :request do
       let(:valid_params) { { course: { title: new_title } } }
 
       it 'updates the course' do
-        sign_in user
         put course_path(course), params: { course: valid_params[:course] }
         course.reload
         expect(course.title).to eq(new_title)
       end
 
       it 'redirects to the course' do
-        sign_in user
         put course_path(course), params: { course: valid_params[:course] }
         expect(response).to redirect_to(course)
       end
@@ -134,7 +124,6 @@ RSpec.describe "Courses", type: :request do
       let(:invalid_params) { { course: { title: '' } } }
 
       it 'does not update the course' do
-        sign_in user
         original_title = course.title
         put course_path(course), params: { course: invalid_params[:course] }
         course.reload
@@ -142,7 +131,6 @@ RSpec.describe "Courses", type: :request do
       end
 
       it 'renders the edit template' do
-        sign_in user
         put course_path(course), params: { course: invalid_params[:course] }
         expect(response).to render_template(:edit)
       end
@@ -153,7 +141,6 @@ RSpec.describe "Courses", type: :request do
     before { sign_in user }
 
     it 'destroys the course' do
-      sign_in user
       course_to_destroy = create(:course, instructor: user)
       expect {
         delete course_path(course_to_destroy)
@@ -161,7 +148,6 @@ RSpec.describe "Courses", type: :request do
     end
 
     it 'redirects to courses list' do
-      sign_in user
       course_to_destroy = create(:course, instructor: user)
       delete course_path(course_to_destroy)
       expect(response).to redirect_to(courses_path)
@@ -172,7 +158,6 @@ RSpec.describe "Courses", type: :request do
     before { sign_in user }
 
     it 'redirects to new invitation path' do
-      sign_in user
       get invite_course_path(course)
       expect(response).to redirect_to(new_course_invitation_path(course))
     end

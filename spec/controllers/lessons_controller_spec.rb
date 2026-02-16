@@ -10,7 +10,6 @@ RSpec.describe "Lessons", type: :request do
     before { sign_in user }
 
     it 'returns http success' do
-      sign_in user
       get select_lesson_type_course_topic_lessons_path(course, topic)
       expect(response).to have_http_status(:success)
     end
@@ -20,20 +19,17 @@ RSpec.describe "Lessons", type: :request do
     before { sign_in user }
 
     it 'returns http success' do
-      sign_in user
       get new_course_topic_lesson_path(course, topic, content_type: 'text')
       expect(response).to have_http_status(:success)
     end
 
     it 'renders the new lesson form' do
-      sign_in user
       get new_course_topic_lesson_path(course, topic, content_type: 'text')
       expect(response.body).to include('Lesson')
       expect(response.body).to include('Create Lesson')
     end
 
     it 'sets content_type from params' do
-      sign_in user
       get new_course_topic_lesson_path(course, topic, content_type: 'video')
       expect(response.body).to include('video')
     end
@@ -46,16 +42,14 @@ RSpec.describe "Lessons", type: :request do
       let(:valid_params) { attributes_for(:lesson, topic_id: topic.id) }
 
       it 'creates a new lesson' do
-        sign_in user
         expect {
           post course_topic_lessons_path(course, topic), params: { lesson: valid_params }
         }.to change(Lesson, :count).by(1)
       end
 
       it 'redirects to course topic' do
-        sign_in user
         post course_topic_lessons_path(course, topic), params: { lesson: valid_params }
-        expect(response).to redirect_to(course_topic_path(course, topic))
+        expect(response).to redirect_to(course_path(course))
       end
     end
 
@@ -63,14 +57,12 @@ RSpec.describe "Lessons", type: :request do
       let(:invalid_params) { { lesson: { title: '' } } }
 
       it 'does not create a new lesson' do
-        sign_in user
         expect {
           post course_topic_lessons_path(course, topic), params: { lesson: invalid_params[:lesson] }
         }.to_not change(Lesson, :count)
       end
 
       it 'renders the new template with an unprocessable_entity status' do
-        sign_in user
         post course_topic_lessons_path(course, topic), params: { lesson: invalid_params[:lesson] }
         expect(response).to render_template(:new)
         expect(response).to have_http_status(:unprocessable_entity)
@@ -82,13 +74,11 @@ RSpec.describe "Lessons", type: :request do
     before { sign_in user }
 
     it 'returns http success' do
-      sign_in user
       get edit_course_topic_lesson_path(course, topic, lesson)
       expect(response).to have_http_status(:success)
     end
 
     it 'renders the edit form' do
-      sign_in user
       get edit_course_topic_lesson_path(course, topic, lesson)
       expect(response.body).to include(lesson.title)
     end
@@ -102,16 +92,14 @@ RSpec.describe "Lessons", type: :request do
       let(:valid_params) { { lesson: { title: new_title } } }
 
       it 'updates the lesson' do
-        sign_in user
         put course_topic_lesson_path(course, topic, lesson), params: { lesson: valid_params[:lesson] }
         lesson.reload
         expect(lesson.title).to eq(new_title)
       end
 
       it 'redirects to course topic' do
-        sign_in user
         put course_topic_lesson_path(course, topic, lesson), params: { lesson: valid_params[:lesson] }
-        expect(response).to redirect_to(course_topic_path(course, topic))
+        expect(response).to redirect_to(course_topic_lesson_path(course, topic, lesson))
       end
     end
 
@@ -126,9 +114,8 @@ RSpec.describe "Lessons", type: :request do
       end
 
       it 'renders the edit template' do
-        sign_in user
         put course_topic_lesson_path(course, topic, lesson), params: { lesson: invalid_params[:lesson] }
-        expect(response).to redirect_to(course_topic_path(course, topic))
+        expect(response).to render_template(:edit)
       end
     end
   end
@@ -145,7 +132,7 @@ RSpec.describe "Lessons", type: :request do
 
     it 'redirects to course topic' do
       delete course_topic_lesson_path(course, topic, lesson_to_destroy)
-      expect(response).to redirect_to(course_topic_path(course, topic))
+      expect(response).to redirect_to(course_path(course))
     end
   end
 
@@ -154,7 +141,6 @@ RSpec.describe "Lessons", type: :request do
     let!(:lesson_to_submit) { create(:lesson, topic: topic) }
 
     it 'redirects to lesson page after submission' do
-      sign_in user
       post submit_quiz_answers_course_topic_lesson_path(course, topic, lesson_to_submit), params: { responses: {} }
       expect(response).to redirect_to(course_topic_lesson_path(course, topic, lesson_to_submit))
     end

@@ -5,9 +5,9 @@ module Lessons
     before :validate_context!
 
     def call
-      update_lesson(context.id, context.params)
+      saved = update_lesson(context.id, context.params)
 
-      if @lesson.persisted?
+      if saved
         Lessons::UpdateSummaryQuestions.call(lesson: @lesson)
         message = "Teacher #{@lesson.topic.course.instructor.first_name} updated lesson: #{@lesson.title}"
         url = Rails.application.routes.url_helpers.course_topic_lesson_path(@lesson.topic.course, @lesson.topic, @lesson)

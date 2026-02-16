@@ -9,11 +9,11 @@ RSpec.describe StudentReportQuery, type: :query do
     let!(:lessons) { create_list(:lesson, 3, topic: topic) }
 
     context 'when student has responses and marks' do
-      let!(:response1) { create(:response, user: student, lesson: lessons[0]) }
-      let!(:response2) { create(:response, user: student, lesson: lessons[1]) }
+      let!(:response1) { create(:response, user: student, responseable: lessons[0]) }
+      let!(:response2) { create(:response, user: student, responseable: lessons[1]) }
       let!(:mark1) { create(:mark, response: response1, value: 80) }
       let!(:mark2) { create(:mark, response: response2, value: 90) }
-      let!(:quiz_mark) { create(:mark, lesson: lessons[2], user: student, value: 70) }
+      let!(:quiz_mark) { create(:mark, lesson: lessons[2], user: student, value: 70, response: nil) }
 
       it 'returns the correct report data' do
         report = StudentReportQuery.new(student.id).call

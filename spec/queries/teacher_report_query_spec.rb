@@ -12,12 +12,12 @@ RSpec.describe TeacherReportQuery, type: :query do
     let!(:lessons) { create_list(:lesson, 3, topic: topic) }
 
     context 'when there is activity in the course' do
-      let!(:response1) { create(:response, user: students[0], lesson: lessons[0]) }
-      let!(:response2) { create(:response, user: students[0], lesson: lessons[1]) }
-      let!(:response3) { create(:response, user: students[1], lesson: lessons[0]) }
+      let!(:response1) { create(:response, user: students[0], responseable: lessons[0]) }
+      let!(:response2) { create(:response, user: students[0], responseable: lessons[1]) }
+      let!(:response3) { create(:response, user: students[1], responseable: lessons[0]) }
       let!(:mark1) { create(:mark, response: response1, value: 80) }
       let!(:mark2) { create(:mark, response: response3, value: 90) }
-      let!(:quiz_mark) { create(:mark, lesson: lessons[2], user: students[0], value: 75) }
+      let!(:quiz_mark) { create(:mark, lesson: lessons[2], user: students[0], value: 75, response: nil) }
 
       it 'returns the correct report data for the teacher' do
         report = TeacherReportQuery.new(teacher.id).call

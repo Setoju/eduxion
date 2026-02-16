@@ -1,7 +1,7 @@
 class LessonsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_lesson, only: [ :show, :edit, :update, :destroy, :submit_quiz_answers]
   before_action :set_course_data, only: [ :new, :create, :edit, :update, :destroy, :select_lesson_type, :show, :submit_quiz_answers]
+  before_action :set_lesson, only: [ :show, :edit, :update, :destroy, :submit_quiz_answers]
 
   def select_lesson_type
   end
@@ -92,11 +92,9 @@ class LessonsController < ApplicationController
 
     def set_lesson
       @lesson = Lesson.find_by(id: params[:id])
+      return if @lesson
 
-      unless @lesson
-        redirect_to course_topic_path(@course, @topic), alert: "Lesson not found"
-        nil
-      end
+      redirect_to course_path(@course), alert: "Lesson not found"
     end
 
     def lesson_params

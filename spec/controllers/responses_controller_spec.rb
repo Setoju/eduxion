@@ -84,10 +84,11 @@ RSpec.describe ResponsesController, type: :controller do
         allow(Responses::CreateResponseWithMark).to receive(:call).and_return(double(success?: false, error: 'Invalid'))
       end
 
-      it 'redirects to lesson page with alert' do
+      it 'renders lessons/show with alert and unprocessable entity status' do
         post :create, params: nested_params.merge(response: valid_attributes)
-        expect(response).to redirect_to(course_topic_lesson_path(course, topic, lesson))
-        expect(flash[:alert]).to eq('Invalid')
+        expect(response).to render_template('lessons/show')
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(flash.now[:alert]).to eq('Invalid')
       end
     end
   end

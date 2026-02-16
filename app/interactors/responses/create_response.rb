@@ -12,7 +12,7 @@ module Responses
       @response.user = context.user
 
       if @response.save
-        lesson = @response.responseable # теперь это Lesson
+        lesson = @response.responseable
         message = "Student #{@response.user.first_name} sent you a response to #{lesson.title}"
         url = Rails.application.routes.url_helpers.course_topic_lesson_path(
             lesson.topic.course,

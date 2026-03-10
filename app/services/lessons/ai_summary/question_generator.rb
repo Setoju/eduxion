@@ -8,8 +8,12 @@ module Lessons
       def call(summary_text, num_questions:)
         prompt = prompt_for(summary_text, num_questions)
         response = @client.generate(prompt, max_tokens: 2000, temperature: 0.4)
-        parse(response)
+        questions = parse(response)
+        Rails.logger.info("[QuestionGenerator] Generated #{questions.size} questions from response (#{response&.length || 0} chars)")
+        Rails.logger.debug("[QuestionGenerator] Raw response: #{response}") if questions.empty?
+        questions
       rescue => e
+        Rails.logger.error("[QuestionGenerator] Error generating questions: #{e.message}")
         []
       end
 
@@ -20,8 +24,10 @@ module Lessons
 
         text.split(/\n+/)
             .map(&:strip)
-            .select { |line| line.match?(/^\d+\./) }
-            .map { |line| line.gsub(/^\d+\.\s*/, "") }
+            .map { |line| line.gsub(/^\*{0,2}\s*/, "") }
+            .select { |line| line.match?(/^\d+[.):]/) }
+            .map { |line| line.gsub(/^\d+[.):]+\s*/, "") }
+            .map { |line| line.gsub(/\*{2}/, "") }
             .reject(&:blank?)
       end
 
@@ -40,8 +46,10 @@ module Lessons
           - Do not refer to the text as a "summary" in the questions; treat it as the lesson content
           - Questions should be in the same language as the summary
 
-          Lesson Summary:
-          #{combined_summary}
+          --- BEGIN LESSON CONTENT ---
+            Lesson Summary:
+            #{combined_summary}
+          --- END LESSON CONTENT ---
         PROMPT
       end
     end

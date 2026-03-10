@@ -17,6 +17,7 @@ module Lessons
       def summarize(text)
         @client.generate(prompt_for(text), max_tokens: 1000, temperature: 0.3)
       rescue => e
+        Rails.logger.error("[ChunkSummarizer] Error summarizing chunk: #{e.message}")
         nil
       end
 
@@ -27,8 +28,10 @@ module Lessons
           Keep the summary informative but brief (2-3 sentences).
           The summary should be in the same language as the original text.
 
-          Text to summarize:
-          #{chunk_text}
+          --- BEGIN LESSON CONTENT ---
+            Text to summarize:
+            #{chunk_text}
+          --- END LESSON CONTENT ---
         PROMPT
       end
     end

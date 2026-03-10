@@ -41,7 +41,6 @@ module Lessons
         questions.each_with_index do |question, index|
           @lesson.lecture_questions.create!(
             question_text: question,
-            answer_text: "",
             position: index
           )
         end

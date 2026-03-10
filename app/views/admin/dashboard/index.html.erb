@@ -1,0 +1,121 @@
+<% content_for(:title, "Dashboard") %>
+
+<div class="row mb-4">
+  <div class="col-sm-6 col-lg-3 mb-3">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-center">
+        <h2 class="mb-0"><%= @users_count %></h2>
+        <p class="text-muted mb-0">
+          <i class="fas fa-users me-1"></i> Users
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3 mb-3">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-center">
+        <h2 class="mb-0"><%= @courses_count %></h2>
+        <p class="text-muted mb-0">
+          <i class="fas fa-graduation-cap me-1"></i> Courses
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3 mb-3">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-center">
+        <h2 class="mb-0"><%= @enrollments_count %></h2>
+        <p class="text-muted mb-0">
+          <i class="fas fa-user-plus me-1"></i> Enrollments
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3 mb-3">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-center">
+        <h2 class="mb-0"><%= @lessons_count %></h2>
+        <p class="text-muted mb-0">
+          <i class="fas fa-book-open me-1"></i> Lessons
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6 mb-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-transparent">
+        <h5 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Recent Courses</h5>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th class="text-center">Status</th>
+              <th class="text-end">Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @recent_courses.each do |course| %>
+              <tr>
+                <td>
+                  <%= link_to course.title, Trestle.lookup(:courses).instance_path(course) %>
+                </td>
+                <td class="text-center">
+                  <% if course.is_archived? %>
+                    <span class="badge bg-danger">Archived</span>
+                  <% elsif course.public? %>
+                    <span class="badge bg-success">Public</span>
+                  <% else %>
+                    <span class="badge bg-warning text-dark">Private</span>
+                  <% end %>
+                </td>
+                <td class="text-end text-muted">
+                  <%= time_ago_in_words(course.created_at) %> ago
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 mb-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-transparent">
+        <h5 class="mb-0"><i class="fas fa-users me-2"></i>Recent Users</h5>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th class="text-center">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @recent_users.each do |user| %>
+              <tr>
+                <td><%= "#{user.first_name} #{user.last_name}" %></td>
+                <td><%= user.email %></td>
+                <td class="text-center">
+                  <span class="badge bg-<%= user.role == 'teacher' ? 'success' : 'secondary' %>">
+                    <%= user.role.capitalize %>
+                  </span>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

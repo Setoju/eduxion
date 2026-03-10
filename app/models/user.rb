@@ -37,6 +37,10 @@ class User < ApplicationRecord
     end
   end
 
+  def admin?
+    admin
+  end
+
   def teacher?
     role == "teacher"
   end

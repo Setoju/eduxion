@@ -22,6 +22,10 @@ gem "redis"
 gem "pragmatic_segmenter"
 gem "whatlanguage"
 
+gem "trestle"
+gem "trestle-auth"
+gem "trestle-search"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 

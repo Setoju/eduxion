@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_24_101000) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_10_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -32,8 +32,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_24_101000) do
     t.boolean "public", default: true, null: false
     t.datetime "ends_at"
     t.boolean "is_archived", default: false, null: false
+    t.integer "lag_threshold", default: 20, null: false
     t.index ["instructor_id"], name: "index_courses_on_instructor_id"
     t.index ["is_archived"], name: "index_courses_on_is_archived"
+    t.check_constraint "lag_threshold >= 5 AND lag_threshold <= 50", name: "courses_lag_threshold_range"
   end
 
   create_table "enrollments", force: :cascade do |t|

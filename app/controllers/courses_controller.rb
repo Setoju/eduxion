@@ -32,6 +32,11 @@ class CoursesController < ApplicationController
     # Lesson search (Ransack)
     @lesson_q = @course.lessons.ransack(params[:q])
     @lessons_by_topic = @lesson_q.result.includes(:topic).group_by(&:topic_id)
+
+    # Lag calculation: only for the course instructor on non-archived courses
+    if !@course.is_archived && policy(@course).update?
+      @lag_statuses = LagCalculatorService.new(@course).call.index_by(&:student_id)
+    end
   end
 
   def new
@@ -90,6 +95,6 @@ class CoursesController < ApplicationController
     end
 
     def course_params
-      params.require(:course).permit(:title, :description, :instructor_id, :public, :ends_at)
+      params.require(:course).permit(:title, :description, :instructor_id, :public, :ends_at, :lag_threshold)
     end
 end

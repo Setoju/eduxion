@@ -31,6 +31,7 @@ class Course < ApplicationRecord
   validates :description, valid_characters: true, presence: true, length: { minimum: 10, maximum: 300 }
   validates :instructor, presence: true
   validates :public, inclusion: { in: [ true, false ] }
+  validates :lag_threshold, inclusion: { in: 5..50 }
 
   after_save :schedule_expiration, if: :saved_change_to_ends_at?
   after_save :schedule_reminder, if: :saved_change_to_ends_at?

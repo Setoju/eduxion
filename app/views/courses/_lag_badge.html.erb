@@ -1,0 +1,9 @@
+<% if @lag_statuses %>
+  <% lag = @lag_statuses[enrollment.user_id] %>
+  <% if lag&.lagging %>
+    <span class="badge bg-danger"
+          title="<%= lag.actual_pct.round %>% complete – expected <%= lag.expected_pct.round %>%">
+      <%= lag.gap.round %>% behind
+    </span>
+  <% end %>
+<% end %>

@@ -218,10 +218,12 @@ Trestle.configure do |config|
   # config.auth.enable_login = true
   # config.auth.enable_logout = true
 
-  # Restrict admin access to users with admin flag
+  # Restrict admin access to signed-in users with the admin flag.
   config.before_action do |controller|
-    if controller.respond_to?(:current_user) && controller.current_user && !controller.current_user.admin?
-      controller.redirect_to "/", alert: "You are not authorized to access the admin panel."
+    user = controller.request.env["warden"]&.user(:user)
+
+    unless user&.admin?
+      controller.redirect_to(controller.main_app.root_path, alert: "you don't have permission to do this action")
     end
   end
 

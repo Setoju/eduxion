@@ -9,10 +9,8 @@ async function updateBadge() {
     const data = await resp.json();
     if (data.unread > 0) {
       badge.classList.remove("d-none");
-      badge.classList.add("d-inline");
     } else {
       badge.classList.add("d-none");
-      badge.classList.remove("d-inline");
     }
   } catch (e) {
     // fail silently

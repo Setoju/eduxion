@@ -1,382 +1,1205 @@
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
 :root {
-  --primary-color: #c39a7c;
-  --secondary-color: #8b6c51;
-  --background-color: #f8f9fa;
-  --text-color: #333;
-  --success-color: #28a745;
-  --danger-color: #dc3545;
-  --warning-color: #ffc107;
-  --info-color: #17a2b8;
+  --ink:            #18180F;
+  --muted:          #7A7870;
+  --bg:             #F5F3EE;
+  --surface:        #FAFAF7;
+  --border:         #DDDBD4;
+  --border-strong:  #B0AEA6;
+  --accent:         #B5431A;
+  --accent-bg:      #FBF0EC;
+  --accent-border:  #E0A898;
+
+  --success-bg:     #EFF4E8;
+  --success-ink:    #2D4A1A;
+  --success-border: #B0C99A;
+
+  --info-bg:        #EAF0F8;
+  --info-ink:       #1A3060;
+  --info-border:    #A8BCD8;
+
+  --warn-bg:        #FAF3E4;
+  --warn-ink:       #4A3210;
+  --warn-border:    #C8A870;
+
+  --primary-color:   var(--accent);
+  --secondary-color: var(--ink);
+  --background-color: var(--bg);
+  --surface-color:   var(--surface);
+  --text-color:      var(--ink);
+  --muted-color:     var(--muted);
+  --success-color:   var(--success-ink);
+  --danger-color:    var(--accent);
+  --warning-color:   var(--warn-ink);
+  --info-color:      var(--info-ink);
+  --ring-color:      rgba(24, 24, 15, 0.15);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Layout */
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  color: var(--ink);
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
 .container {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 28px 20px;
 }
 
-/* Sidebar */
+.main-shell {
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.main-shell--compact {
+  gap: 14px;
+}
+
+/* ============================================================
+   HEADER / GUEST NAV
+   ============================================================ */
+.site-header {
+  padding-top: 10px;
+}
+
+.site-header .container {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.site-header--guest .main-nav-block {
+  display: none;
+}
+
+.guest-nav-block {
+  margin: 0 0 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.guest-nav__brand {
+  text-decoration: none;
+  color: var(--ink);
+  font-family: "Courier New", monospace;
+  font-size: 0.82rem;
+  font-weight: bold;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.guest-nav__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   LEFT SIDEBAR
+   ============================================================ */
 .left-side {
-  width: 250px;
-  background-color: white;
-  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-right: 20px;
+  position: sticky;
+  top: 16px;
 }
 
+/* ============================================================
+   CENTER
+   ============================================================ */
+.center {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+.page-summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: bold;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  font-family: "Georgia", serif;
+  color: var(--ink);
+}
+
+.page-subtitle {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-family: "Courier New", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   USER PROFILE (sidebar)
+   ============================================================ */
 .user-avatar {
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
+  display: block;
+  width: 56px;
+  height: 56px;
   object-fit: cover;
-  margin-bottom: 15px;
-  border: 3px solid var(--primary-color);
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .user-name {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-color);
-  margin-bottom: 5px;
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  font-family: "Georgia", serif;
+  color: var(--ink);
+  letter-spacing: -0.01em;
 }
 
 .user-email,
 .user-role,
 .user-stats {
-  color: #6c757d;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
+  font-family: "Courier New", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 3px;
 }
 
-/* Center Content */
-.center {
-  flex: 1;
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Navigation */
-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
+.user-actions,
+.auth-buttons {
   display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 16px;
 }
 
-nav button {
-  flex: 1;
-  min-width: 120px;
-  padding: 8px 15px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-nav button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Course Cards */
-.course {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.course:hover {
-  transform: translateY(-5px);
-}
-
-.course-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.course-title {
-  font-size: 1.5rem;
-  color: var(--text-color);
-  margin-bottom: 10px;
-}
-
-.course-description {
-  color: #6c757d;
-  margin-bottom: 15px;
-  line-height: 1.6;
-}
-
-.instructor,
-.archived {
-  color: #6c757d;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-}
-
-/* Badges */
-.badge {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 15px;
-  font-size: 0.8rem;
-  margin-right: 5px;
-}
-
-.badge-public {
-  background-color: #226c33;
-  color: #155724;
-}
-
-.badge-private {
-  background-color: #980909;
-  color: #856404;
-}
-
-.badge-enrolled {
-  background-color: #4f84bd;
-  color: #004085;
-}
-
-/* Buttons */
-.btn {
-  margin-right: 5px;
-  margin-bottom: 5px;
-  padding: 8px 15px;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-}
-
-.btn-primary {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-}
-
-.btn-danger {
-  background-color: var(--danger-color);
-  color: white;
-  border: none;
-}
-
-.btn-warning {
-  background-color: var(--warning-color);
-  color: black;
-  border: none;
-}
-
-.btn-info {
-  background-color: var(--info-color);
-  color: white;
-  border: none;
-}
-
-/* Pagination */
-.pagination {
-  display: flex;
+.user-actions .app-btn,
+.auth-buttons .app-btn {
+  width: 100%;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
 }
 
-.pagination a {
-  padding: 5px 10px;
-  border-radius: 5px;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.pagination a:hover {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-/* Course Links */
-.course-link {
-  display: inline-block;
-  text-decoration: none;
-  padding: 0.4rem 0.5rem;
-  border-width: 0;
-  border-radius: 0.25rem;
-  transition: all 0.2s ease-in-out;
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
-  text-align: center;
-  font-weight: 500;
-  font-size: 0.9rem;
-  line-height: 1.2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.course-link-primary {
-  background-color: #1fa2a4;
-  color: white;
-}
-
-.course-link-primary:hover {
-  background-color: #8e5e0c;
-}
-
-.course-link-danger {
-  background-color: #c30417;
-  color: white;
-}
-
-.course-link-danger:hover {
-  background-color: #8e5e0c;
-}
-
-.course-link-warning {
-  background-color: #454545;
-  color: white;
-}
-
-.course-link-warning:hover {
-  background-color: #8e5e0c;
-}
-
-.course-link-success {
-  background-color: #28a745;
-  color: white;
-}
-
-.course-link-success:hover {
-  background-color: #1e7e34;
-}
-
-.search-container {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 14px;
-  align-items: flex-end;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  background: gainsboro;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-}
-
-.search-field {
-  display: flex;
-  flex-direction: row;
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.app-btn {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  border: 1px solid;
+  padding: 9px 20px;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  border-radius: 0;
+}
+
+.app-btn--primary {
+  background: var(--ink);
+  color: var(--surface);
+  border-color: var(--ink);
+}
+
+.app-btn--primary:hover {
+  background: #2C2C20;
+  color: var(--surface);
+}
+
+.app-btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--border-strong);
+}
+
+.app-btn--ghost:hover {
+  border-color: var(--ink);
+  background: var(--bg);
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.main-nav-block {
+  margin: 0 0 16px;
+  border: 1px solid var(--border);
+  padding: 0;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.main-nav__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  gap: 0.45rem;
+  padding: 9px 18px;
+  font-family: "Courier New", monospace;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  transition: color 0.12s, background 0.12s;
+  border-radius: 0;
+  position: relative;
+}
+
+.main-nav__link:last-child {
+  border-right: none;
+}
+
+.main-nav__link:hover {
+  color: var(--ink);
+  background: var(--bg);
+}
+
+.main-nav__link.is-active {
+  color: var(--surface);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.main-nav__icon {
+  font-size: 0.86rem;
+}
+
+.main-nav__link--notify {
+  margin-left: auto;
+}
+
+.main-nav__notify {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.12s;
+  border-radius: 0;
+  margin-left: auto;
+}
+
+.main-nav__notify:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.main-nav__notify.is-active {
+  background: var(--ink);
+  color: var(--surface);
+  border-color: var(--ink);
+}
+
+.main-nav__badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 14px;
+  height: 14px;
+  font-family: "Courier New", monospace;
+  font-size: 0.6rem;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 0;
+}
+
+/* ============================================================
+   SEARCH PANEL
+   ============================================================ */
+.search-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.search-panel__title {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  font-family: "Georgia", serif;
+}
+
+.search-grid,
+.search-bar-row,
+.search-filter-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.search-filter-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.search-field,
+.search-inline-field {
+  display: flex;
+  flex-direction: column;
   gap: 6px;
 }
 
-.search-field label {
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: gray;
+.search-field label,
+.search-field > span,
+.search-inline-field,
+.search-field__label {
+  font-family: "Courier New", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: bold;
 }
 
 .search-field input[type="text"],
-.search-field input[type="search"] {
-  min-width: 180px;
-  padding: 0.45rem 0.7rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 0.3rem;
-  background-color: rgba(255, 255, 255, 0.85);
+.search-field input[type="search"],
+.search-inline-field input[type="text"],
+.search-inline-field input[type="search"] {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 8px 10px;
+  background: var(--bg);
+  font-size: 0.9rem;
+  font-family: "Georgia", serif;
+  color: var(--ink);
+  transition: border-color 0.12s;
 }
 
-.search-field input[type="checkbox"] {
-  accent-color: var(--warning-color);
+.search-field input[type="text"]:focus,
+.search-field input[type="search"]:focus,
+.search-inline-field input[type="text"]:focus,
+.search-inline-field input[type="search"]:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+.search-field input[type="checkbox"],
+.search-toggle input[type="checkbox"] {
+  accent-color: var(--ink);
+}
+
+.search-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  padding: 0.3rem 0;
+}
+
+.search-toggle--compact {
+  font-size: 0.68rem;
+  padding: 0.18rem 0;
 }
 
 .search-actions {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
   align-items: center;
+  margin-top: 14px;
 }
 
-.search-actions .btn {
-  padding: 0.45rem 0.9rem;
-  font-weight: 600;
-  border-radius: 0.3rem;
+.search-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 8px 18px;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  transition: all 0.12s;
 }
 
-.search-actions .btn-primary {
-  background-color: #ffffff;
-  color: var(--secondary-color);
-  border: none;
+.search-actions a:hover {
+  border-color: var(--ink);
+  background: var(--bg);
 }
 
-.search-actions .btn-secondary {
-  background-color: transparent;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.7);
+.filter-drawer {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
 }
 
-/* Responses Table Styles */
+.filter-drawer summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.58rem 0.72rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: bold;
+}
+
+.filter-drawer summary::-webkit-details-marker {
+  display: none;
+}
+
+.filter-chip-group {
+  padding: 0 0.58rem 0.58rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.search-group {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.search-group + .search-group {
+  margin-top: 10px;
+}
+
+.search-group legend {
+  margin: 0 0 4px;
+  padding: 0 6px;
+  font-family: "Courier New", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.09em;
+  font-weight: bold;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   AUTH PAGES
+   ============================================================ */
+.auth-page {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.auth-card {
+  border: 1px solid var(--border);
+  padding: 22px;
+  background: var(--surface);
+}
+
+.auth-card--wide {
+  max-width: 760px;
+}
+
+.auth-card__header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-family: "Georgia", serif;
+}
+
+.auth-card__header p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.auth-form__fields {
+  margin-top: 14px;
+}
+
+.auth-form .form-label {
+  font-family: "Courier New", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: bold;
+}
+
+.auth-form .form-control,
+.auth-form .form-select {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 8px 10px;
+  background: var(--bg);
+  font-size: 0.9rem;
+  font-family: "Georgia", serif;
+  color: var(--ink);
+}
+
+.auth-form .form-control:focus,
+.auth-form .form-select:focus {
+  border-color: var(--ink);
+  box-shadow: none;
+  outline: none;
+}
+
+.auth-form .btn.btn-primary {
+  width: 100%;
+}
+
+.auth-links {
+  margin-top: 12px;
+}
+
+.auth-links__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-links__list a {
+  text-decoration: none;
+  color: var(--accent);
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.auth-links__oauth {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.auth-errors {
+  border: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.auth-errors h2 {
+  margin: 0 0 6px;
+  font-size: 0.94rem;
+  color: var(--accent);
+}
+
+.auth-errors ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.auth-fieldset {
+  margin: 0;
+  border: 1px solid var(--border);
+  padding: 10px;
+}
+
+.auth-fieldset + .auth-fieldset {
+  margin-top: 10px;
+}
+
+.auth-fieldset legend {
+  margin: 0;
+  padding: 0 6px;
+  font-family: "Courier New", monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: bold;
+}
+
+.course-date-panel {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: 12px;
+}
+
+.course-date-input {
+  max-width: 340px;
+}
+
+.course-date-shortcuts {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.course-date-chip {
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 6px 12px;
+  font-family: "Courier New", monospace;
+  font-size: 0.64rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.course-date-chip:hover {
+  border-color: var(--ink);
+  background: #f0ede5;
+}
+
+.course-date-chip--clear {
+  color: var(--accent);
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.course-date-chip--clear:hover {
+  border-color: var(--accent);
+  background: #f8e5de;
+}
+
+/* ============================================================
+   COURSE CARDS
+   ============================================================ */
+.course {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px 20px 20px 23px;
+  margin-bottom: 12px;
+  position: relative;
+  transition: border-color 0.14s;
+}
+
+.course::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.14s;
+}
+
+.course:hover {
+  border-color: var(--border-strong);
+}
+
+.course:hover::before {
+  background: var(--accent);
+}
+
+.course-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.course-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.course-title {
+  font-size: 1.05rem;
+  font-weight: bold;
+  margin: 0;
+  color: var(--ink);
+  font-family: "Georgia", serif;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.course-description {
+  color: var(--muted);
+  margin: 8px 0 0;
+  line-height: 1.6;
+  font-size: 0.9rem;
+  font-family: "Georgia", serif;
+}
+
+.instructor,
+.archived {
+  font-family: "Courier New", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.course-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.course-empty {
+  padding: 2rem;
+  border: 1px dashed var(--border-strong);
+  color: var(--muted);
+  text-align: center;
+  font-family: "Courier New", monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  font-family: "Courier New", monospace;
+  font-size: 0.65rem;
+  font-weight: bold;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  border: 1px solid;
+  border-radius: 0;
+}
+
+.badge-public {
+  background: var(--success-bg);
+  color: var(--success-ink);
+  border-color: var(--success-border);
+}
+
+.badge-private {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-color: var(--accent-border);
+}
+
+.badge-enrolled {
+  background: var(--info-bg);
+  color: var(--info-ink);
+  border-color: var(--info-border);
+}
+
+.badge-success,
+.bg-success {
+  background: var(--success-bg) !important;
+  color: var(--success-ink) !important;
+  border-color: var(--success-border) !important;
+}
+
+.badge-secondary,
+.bg-secondary {
+  background: transparent !important;
+  color: var(--muted) !important;
+  border-color: var(--border) !important;
+}
+
+.bg-primary {
+  background: var(--ink) !important;
+  color: var(--surface) !important;
+  border-color: var(--ink) !important;
+}
+
+.bg-danger {
+  background: var(--accent-bg) !important;
+  color: var(--accent) !important;
+  border-color: var(--accent-border) !important;
+}
+
+.bg-warning {
+  background: var(--warn-bg) !important;
+  color: var(--warn-ink) !important;
+  border-color: var(--warn-border) !important;
+}
+
+.bg-info,
+.bg-light {
+  background: var(--info-bg) !important;
+  color: var(--info-ink) !important;
+  border-color: var(--info-border) !important;
+}
+
+/* ============================================================
+   LEGACY .btn / .btn-* (kept for compatibility)
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 8px 16px;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.12s;
+  border-radius: 0;
+}
+
+.btn:hover {
+  filter: brightness(0.92);
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--surface);
+  border-color: var(--ink);
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-danger:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-warning {
+  background: transparent;
+  color: var(--warn-ink);
+  border-color: var(--warn-border);
+}
+
+.btn-warning:hover {
+  background: var(--warn-bg);
+}
+
+.btn-info {
+  background: transparent;
+  color: var(--info-ink);
+  border-color: var(--info-border);
+}
+
+.btn-info:hover {
+  background: var(--info-bg);
+}
+
+.btn-secondary,
+.btn-outline-secondary {
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--border-strong);
+}
+
+.btn-secondary:hover,
+.btn-outline-secondary:hover {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn-outline-success {
+  background: transparent;
+  color: var(--success-ink);
+  border-color: var(--success-border);
+}
+
+.btn-outline-success:hover {
+  background: var(--success-bg);
+}
+
+/* ============================================================
+   COURSE LINK BUTTONS
+   ============================================================ */
+.course-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 6px 13px;
+  font-family: "Courier New", monospace;
+  font-size: 0.68rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid;
+  transition: all 0.12s;
+  border-radius: 0;
+}
+
+.course-link-primary {
+  color: var(--info-ink);
+  border-color: var(--info-border);
+  background: var(--info-bg);
+}
+
+.course-link-primary:hover {
+  background: var(--info-ink);
+  color: #fff;
+  border-color: var(--info-ink);
+}
+
+.course-link-danger {
+  color: var(--accent);
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.course-link-danger:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.course-link-warning {
+  color: var(--warn-ink);
+  border-color: var(--warn-border);
+  background: var(--warn-bg);
+}
+
+.course-link-warning:hover {
+  background: var(--warn-ink);
+  color: #fff;
+  border-color: var(--warn-ink);
+}
+
+.course-link-success {
+  color: var(--success-ink);
+  border-color: var(--success-border);
+  background: var(--success-bg);
+}
+
+.course-link-success:hover {
+  background: var(--success-ink);
+  color: #fff;
+  border-color: var(--success-ink);
+}
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-top: 24px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pagination a,
+.pagination .page,
+.pagination .next,
+.pagination .prev,
+.pagination .first,
+.pagination .last {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
+  font-family: "Courier New", monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--muted);
+  text-decoration: none;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  transition: all 0.12s;
+}
+
+.pagination a:last-child {
+  border-right: none;
+}
+
+.pagination a:hover,
+.pagination .current {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* ============================================================
+   PROFILE PAGE
+   ============================================================ */
+.profile-page {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.profile-card {
+  border: 1px solid var(--border);
+  padding: 22px;
+  background: var(--surface);
+}
+
+.profile-card__head {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.profile-card__name {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: "Georgia", serif;
+  letter-spacing: -0.01em;
+}
+
+.profile-card__line {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-family: "Courier New", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.profile-card__stats {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.profile-card__actions {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ============================================================
+   RESPONSES TABLE
+   ============================================================ */
 .responses-table-container {
   margin-top: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
   overflow: hidden;
 }
 
 .responses-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-family: "Georgia", serif;
 }
 
 .responses-table thead {
-  background-color: var(--primary-color);
-  color: white;
+  background: var(--ink);
+  color: var(--surface);
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
 .responses-table th {
-  padding: 12px 8px;
+  padding: 12px 10px;
   text-align: left;
-  font-weight: 600;
-  border-bottom: 2px solid var(--secondary-color);
+  font-family: "Courier New", monospace;
+  font-size: 0.65rem;
+  font-weight: bold;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
 .responses-table td {
-  padding: 10px 8px;
-  border-bottom: 1px solid #e9ecef;
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
   vertical-align: top;
 }
 
 .response-row:hover {
-  background-color: #f8f9fa;
+  background: var(--bg);
 }
 
-.lesson-title {
-  font-weight: 600;
-  color: var(--text-color);
+.responses-table .lesson-title {
+  font-weight: bold;
+  color: var(--ink);
   min-width: 150px;
 }
 
-.course-title {
-  color: var(--secondary-color);
+.responses-table .course-title {
+  color: var(--ink);
+  font-size: 0.88rem;
   min-width: 120px;
 }
 
@@ -385,80 +1208,211 @@ nav button:hover {
 }
 
 .content-preview {
-  line-height: 1.4;
-  color: #6c757d;
-}
-
-.mark-value .badge {
-  font-size: 0.75rem;
-  padding: 4px 8px;
-}
-
-.badge-success {
-  background-color: var(--success-color);
-  color: white;
-}
-
-.badge-secondary {
-  background-color: #6c757d;
-  color: white;
+  line-height: 1.45;
+  color: var(--muted);
 }
 
 .comment-preview {
   max-width: 150px;
-  line-height: 1.3;
-  color: #6c757d;
+  line-height: 1.35;
+  color: var(--muted);
 }
 
 .marker-name {
   font-size: 0.85rem;
-  color: var(--text-color);
+  color: var(--ink);
   min-width: 100px;
 }
 
 .submitted-date {
-  font-size: 0.85rem;
-  color: #6c757d;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
   white-space: nowrap;
 }
 
+.mark-value .badge {
+  font-size: 0.65rem;
+  padding: 3px 8px;
+}
+
 .text-muted {
-  color: #6c757d !important;
+  color: var(--muted) !important;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .left-side {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .center {
-    width: 100%;
-  }
-
-  nav ul {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  nav button {
-    width: 100%;
-  }
-}
-
-/* Quiz */
+/* ============================================================
+   QUIZ
+   ============================================================ */
 .question-title {
-  font-weight: 700;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  color: var(--secondary-color);
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+  color: var(--ink);
+  font-family: "Georgia", serif;
+  letter-spacing: -0.01em;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
 }
 
 .option-title {
-  color: var(--text-color);
-  margin-bottom: 5px;
+  color: var(--ink);
+  margin-bottom: 6px;
   font-size: 0.9rem;
-  font-weight: 500;
-  line-height: 1.4;
+  font-family: "Georgia", serif;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   BOOK READER HELPERS
+   ============================================================ */
+.nav-center {
+  text-align: center;
+}
+
+.page-info {
+  font-family: "Courier New", monospace;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.page-selector input {
+  width: 70px;
+  text-align: center;
+  display: inline-block;
+}
+
+/* ============================================================
+   BOOTSTRAP COMPONENT ALIGNMENT
+   ============================================================ */
+.card,
+.modal-content {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.card-header,
+.modal-header,
+.modal-footer {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.list-group-item {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.form-control,
+.form-select {
+  border-radius: 0;
+  border-color: var(--border);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.form-control:focus,
+.form-select:focus,
+.btn:focus,
+.btn-close:focus {
+  box-shadow: none;
+  border-color: var(--ink);
+}
+
+.alert {
+  border-radius: 0;
+  border-width: 1px;
+  font-family: "Courier New", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.alert-success {
+  color: var(--success-ink);
+  background: var(--success-bg);
+  border-color: var(--success-border);
+}
+
+.alert-danger {
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
+/* Report completion bars only */
+.report-completion-progress {
+  background-color: #E9E4D9;
+}
+
+.report-completion-progress .report-completion-bar.bg-success {
+  background-color: #2E7D32 !important;
+}
+
+.report-completion-progress .report-completion-bar.bg-warning {
+  background-color: #C77800 !important;
+}
+
+.report-completion-progress .report-completion-bar.bg-danger {
+  background-color: #B42318 !important;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .main-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .left-side {
+    width: auto;
+    position: static;
+  }
+
+  .page-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main-nav {
+    width: 100%;
+  }
+
+  .main-nav__link {
+    flex: 1 1 calc(50% - 1px);
+  }
+
+  .main-nav__notify,
+  .main-nav__link--notify {
+    margin-left: 0;
+  }
+
+  .guest-nav-block {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .search-grid,
+  .search-bar-row,
+  .search-filter-list {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-chip-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-card__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pagination {
+    width: auto;
+  }
 }

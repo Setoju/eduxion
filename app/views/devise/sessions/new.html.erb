@@ -1,8 +1,12 @@
 <div class="container">
-  <div class="auth-form">
-    <h2>Log in</h2>
+  <section class="auth-page">
+    <div class="auth-form auth-card">
+      <header class="auth-card__header">
+        <h1>Sign In</h1>
+        <p>Welcome back. Continue where you left off.</p>
+      </header>
 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "needs-validation", novalidate: true }) do |f| %>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form__fields", novalidate: true }) do |f| %>
       <div class="field mb-3">
         <%= f.label :email, class: "form-label" %>
         <%= f.email_field :email, autofocus: true, autocomplete: "email", 
@@ -29,10 +33,11 @@
     <div class="actions">
       <%= f.submit "Log in", class: "btn btn-primary" %>
     </div>
-    <% end %>
+      <% end %>
 
-    <div class="links mt-3">
-      <%= render "devise/shared/links" %>
+      <div class="links mt-3 auth-links">
+        <%= render "devise/shared/links" %>
+      </div>
     </div>
-  </div>
+  </section>
 </div>

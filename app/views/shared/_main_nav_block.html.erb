@@ -1,0 +1,25 @@
+<% if current_user %>
+  <header class="site-header" aria-label="Page header navigation">
+    <div class="container">
+      <div class="main-nav-block">
+        <%= render "shared/main_nav" %>
+      </div>
+    </div>
+  </header>
+<% else %>
+  <header class="site-header site-header--guest" aria-label="Guest header navigation">
+    <div class="container">
+      <div class="guest-nav-block">
+        <%= link_to "Studidi", root_path, class: "guest-nav__brand" %>
+        <nav class="guest-nav__actions" aria-label="Authentication links">
+          <% unless current_page?(new_user_session_path) %>
+            <%= link_to "Sign In", new_user_session_path, class: "app-btn app-btn--primary" %>
+          <% end %>
+          <% unless current_page?(new_user_registration_path) %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "app-btn app-btn--ghost" %>
+          <% end %>
+        </nav>
+      </div>
+    </div>
+  </header>
+<% end %>

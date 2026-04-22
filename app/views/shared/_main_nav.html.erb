@@ -1,0 +1,35 @@
+<% return unless current_user %>
+
+<nav class="main-nav" aria-label="Main navigation">
+  <%= link_to total_responses_path(current_user),
+              class: "main-nav__link #{'is-active' if current_page?(total_responses_path(current_user))}" do %>
+    <i class="bi bi-clipboard2-data main-nav__icon" aria-hidden="true"></i>
+    <span>Responses</span>
+  <% end %>
+
+  <%= link_to courses_path,
+              class: "main-nav__link #{'is-active' if current_page?(courses_path)}" do %>
+    <i class="bi bi-journal-richtext main-nav__icon" aria-hidden="true"></i>
+    <span>Courses</span>
+  <% end %>
+
+  <%= link_to bookmarks_path(current_user),
+              class: "main-nav__link #{'is-active' if current_page?(bookmarks_path(current_user))}" do %>
+    <i class="bi bi-bookmark-check main-nav__icon" aria-hidden="true"></i>
+    <span>Bookmarks</span>
+  <% end %>
+
+  <%= link_to profile_path,
+              class: "main-nav__link #{'is-active' if current_page?(profile_path)}" do %>
+    <i class="bi bi-person-circle main-nav__icon" aria-hidden="true"></i>
+    <span>Profile</span>
+  <% end %>
+
+  <%= link_to notifications_path,
+              class: "main-nav__link main-nav__link--notify #{'is-active' if current_page?(notifications_path)}",
+              aria: { label: "Notifications" } do %>
+    <i class="bi bi-bell-fill main-nav__icon" aria-hidden="true"></i>
+    <span>Notifications</span>
+    <span id="notification-badge" class="main-nav__badge d-none">•</span>
+  <% end %>
+</nav>

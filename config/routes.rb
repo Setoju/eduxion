@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   }
   get "up" => "rails/health#show", as: :rails_health_check
   get "responses/:user_id", to: "responses#index", as: :total_responses
+  get "profile", to: "profiles#show", as: :profile
 
   resources :messages, only: [ :index, :create ]
 

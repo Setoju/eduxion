@@ -1,0 +1,37 @@
+<div class="container">
+  <section class="center profile-page">
+    <header class="page-summary">
+      <div>
+        <h1 class="page-title">Profile</h1>
+        <p class="page-subtitle">Your account details and quick actions.</p>
+      </div>
+    </header>
+
+    <article class="profile-card">
+      <div class="profile-card__head">
+        <%= image_tag @user.avatar.present? ? @user.avatar.url : "default_avatar.svg", class: "user-avatar" %>
+        <div>
+          <h2 class="profile-card__name"><%= @user.first_name %> <%= @user.last_name %></h2>
+          <p class="profile-card__line"><%= @user.email %></p>
+          <p class="profile-card__line"><%= @user.role %></p>
+        </div>
+      </div>
+
+      <div class="profile-card__stats">
+        <% if @user.teacher? %>
+          <p class="profile-card__line">Created courses: <strong><%= @user.courses.count %></strong></p>
+        <% else %>
+          <p class="profile-card__line">Enrolled courses: <strong><%= @user.enrollments.count %></strong></p>
+        <% end %>
+      </div>
+
+      <div class="profile-card__actions">
+        <%= link_to "Edit profile", edit_user_registration_path, class: "app-btn app-btn--ghost" %>
+        <%= button_to "Log Out", destroy_user_session_path,
+                      method: :delete,
+                      data: { confirm: "Are you sure you want to log out?" },
+                      class: "app-btn app-btn--ghost" %>
+      </div>
+    </article>
+  </section>
+</div>

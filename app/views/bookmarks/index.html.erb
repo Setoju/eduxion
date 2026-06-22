@@ -1,24 +1,5 @@
 <div class="container">
   <div class="center">
-    <% if current_user %>
-      <nav>
-        <ul>
-          <li>
-            <%= link_to "Responses", total_responses_path(current_user), 
-                         class: "btn btn-primary" %>
-          </li>
-          <li>
-            <%= link_to "Courses", courses_path, 
-                         class: "btn btn-primary" %>
-          </li>
-          <li>
-            <%= link_to "Bookmarks", bookmarks_path(current_user), 
-                         class: "btn btn-primary" %>
-          </li>
-        </ul>
-      </nav>
-    <% end %>
-
     <div class="bookmarks-list">
       <% if @bookmarks.any? %>
         <% @bookmarks.each do |bookmark| %>

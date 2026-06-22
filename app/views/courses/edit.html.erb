@@ -1,51 +1,77 @@
 <div class="container">
-  <div class="center">
-    <nav>
-      <ul>
-        <li><%= link_to "Responses", total_responses_path(current_user), class: "btn btn-primary" %></li>
-        <li><%= link_to "Courses", courses_path, class: "btn btn-primary" %></li>
-        <li><%= link_to "Bookmarks", bookmarks_path(current_user), class: "btn btn-primary" %></li>
-      </ul>
-    </nav>
+  <section class="center">
+    <article class="course-form-container">
+      <header class="page-summary">
+        <div>
+          <h1 class="page-title">Edit Course</h1>
+          <p class="page-subtitle"><%= @course.title %></p>
+        </div>
+      </header>
 
-    <div class="course-form-container">
-      <h1>Edit Course: <%= @course.title %></h1>
-      
       <%= form_with(model: @course, class: "course-form") do |form| %>
-        <div class="form-group">
-          <%= form.label :title, class: "form-label" %>
-          <%= form.text_field :title, class: "form-control" %>
-        </div>
-        
-        <div class="form-group">
-          <%= form.label :description, class: "form-label" %>
-          <%= form.text_area :description, class: "form-control", rows: 5 %>
-        </div>
-        
-        <div class="form-group form-check">
-          <%= form.check_box :public, class: "form-check-input" %>
-          <%= form.label :public, "Make this course public", class: "form-check-label" %>
-        </div>
-        
-        <div class="form-group">
-          <%= form.label :ends_at, "Course end date", class: "form-label" %>
-          <div class="datetime-select">
-            <%= form.datetime_select :ends_at, { start_year: Time.current.year }, { class: "form-control" } %>
+        <fieldset class="form-group mb-4">
+          <legend class="form-label">Course Details</legend>
+          <div class="form-group mb-3">
+            <%= form.label :title, class: "form-label" %>
+            <%= form.text_field :title, class: "form-control", required: true, autofocus: true %>
           </div>
-        </div>
 
-        <div class="form-group">
-          <%= form.label :lag_threshold, "Lag alert threshold (%)", class: "form-label" %>
-          <%= form.number_field :lag_threshold, min: 5, max: 50, step: 5, class: "form-control" %>
-          <div class="form-text text-muted">Students more than this % below expected pace will be flagged (5–50, default 20).</div>
-        </div>
-        <br>
-        <div class="form-actions">
+          <div class="form-group">
+            <%= form.label :description, class: "form-label" %>
+            <%= form.text_area :description, class: "form-control", rows: 5 %>
+          </div>
+        </fieldset>
+
+        <fieldset class="form-group mb-4">
+          <legend class="form-label">Availability</legend>
+          <div class="form-group form-check mb-3">
+            <%= form.check_box :public, class: "form-check-input" %>
+            <%= form.label :public, "Make this course public", class: "form-check-label" %>
+          </div>
+
+          <div class="form-group course-date-panel" data-controller="date-presets">
+            <%= form.label :ends_at, "Course end date", class: "form-label" %>
+            <%= form.datetime_local_field :ends_at,
+                                          class: "form-control course-date-input",
+                                          value: @course.ends_at&.in_time_zone&.strftime("%Y-%m-%dT%H:%M"),
+                                          data: { "date-presets-target": "input" } %>
+
+            <div class="course-date-shortcuts" role="group" aria-label="End date shortcuts">
+              <button type="button"
+                      class="course-date-chip"
+                      data-action="date-presets#set"
+                      data-date-presets-days-param="7">+1 week</button>
+              <button type="button"
+                      class="course-date-chip"
+                      data-action="date-presets#set"
+                      data-date-presets-days-param="14">+2 weeks</button>
+              <button type="button"
+                      class="course-date-chip"
+                      data-action="date-presets#set"
+                      data-date-presets-days-param="30">+1 month</button>
+              <button type="button"
+                      class="course-date-chip course-date-chip--clear"
+                      data-action="date-presets#clear">No end date</button>
+            </div>
+
+            <small class="form-text text-muted">Choose a date and time or use a shortcut for quick scheduling.</small>
+          </div>
+        </fieldset>
+
+        <fieldset class="form-group mb-4">
+          <legend class="form-label">Pacing Alerts</legend>
+          <div class="form-group">
+            <%= form.label :lag_threshold, "Lag alert threshold (%)", class: "form-label" %>
+            <%= form.number_field :lag_threshold, min: 5, max: 50, step: 5, class: "form-control" %>
+            <small class="form-text text-muted">Students more than this % below expected pace will be flagged (5-50, default 20).</small>
+          </div>
+        </fieldset>
+
+        <footer class="form-actions">
           <%= form.submit "Update Course", class: "btn btn-primary" %>
           <%= link_to "Cancel", course_path(@course), class: "btn btn-outline-secondary" %>
-          <%= link_to "View All Courses", courses_path, class: "btn btn-link" %>
-        </div>
+        </footer>
       <% end %>
-    </div>
-  </div>
+    </article>
+  </section>
 </div>
